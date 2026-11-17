@@ -22,7 +22,7 @@ function setup() {
     document: { body: { classList: { toggle: (...args) => calls.push(args) } }, activeElement: { focus: () => calls.push('restoreFocus') } },
     window: { location: { href: 'http://127.0.0.1:8080/dispatch_link/public/dispatch.html?id=355&mode=view', assign: url => calls.push({ navigation: url }) }, requestAnimationFrame: fn => fn() },
     requestJson: async (url, options) => { calls.push({ url, options }); return { status: 'ok' }; },
-    clearDraftRecovery: () => calls.push('clearRecovery'), setDraftUnsavedChanges: value => calls.push({ unsaved: value }),
+    clearStoredBrowserDraft: () => calls.push('clearStoredDraft'), setDraftUnsavedChanges: value => calls.push({ unsaved: value }),
     showNotice: message => calls.push({ notice: message }), updateDispatchPresentation: () => calls.push('presentation'),
     returnToApprovalsPreviousFocus: null, returnToApprovalsInProgress: false
   });
@@ -67,14 +67,17 @@ test('successful return POSTs the saved version and opens the same dispatch in e
   assert.equal(target.searchParams.get('id'), '355');
   assert.equal(target.searchParams.has('mode'), false);
   assert.equal(target.searchParams.get('returnedToApprovals'), '1');
-  assert.ok(calls.includes('clearRecovery'));
+  assert.ok(calls.includes('clearStoredDraft'));
+  assert.ok(calls.some(c => c?.unsaved === false));
+  assert.ok(calls.indexOf('clearStoredDraft') < calls.findIndex(c => c?.navigation),
+    'The saved browser draft is cleared before reopening the dispatch');
 });
 test('server denial and stale versions keep the current record and draft recovery', async () => {
   for (const status of ['forbidden', 'unauthorized', 'validation_error', 'conflict', 'locked_status', 'not_found']) {
     const { context, calls } = setup();
     context.requestJson = async () => ({ status });
     await assert.rejects(context.returnCurrentDispatchToApprovals());
-    assert.equal(calls.some(c => c?.navigation || c === 'clearRecovery'), false);
+    assert.equal(calls.some(c => c?.navigation || c === 'clearStoredDraft' || c?.unsaved === false), false);
   }
 });
 test('non-admin callers cannot submit even if they invoke the handler directly', async () => {

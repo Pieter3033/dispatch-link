@@ -27,8 +27,12 @@ Real credentials, database files, uploads, incident data, generated reports, scr
 
 Preserve the exclusion rules in .gitignore. Review staged files and run a secret scan before future pushes.
 
-## Snapshot validation
+## Tests and validation
 
-All 44 JavaScript files passed syntax checks. The selected offline regression tests passed 50 of 55 checks. Five checks require follow-up: ETA event-handler extraction uses an outdated boundary; PDF generation requires local backend configuration; return-to-approvals and VESA harnesses omit helpers now used by the frontend; VESA navigation also expects a sibling host-application directory. No database integration tests or migration scripts were run.
+After installing dependencies with npm ci, run npm test (or node --test "tests/*.test.cjs") for the offline regression suite. The PDF tests use fixture configuration and reject database requests; they do not need a populated .env or database credentials. The suite also checks frontend behavior using simulated browser objects, without starting a browser or application server.
 
-Gitleaks found no secrets in the exported source. A separate exact-value check found no matches for the populated local database credential values.
+The optional npm run test:host-navigation command checks the sibling host application's HTML navigation. Set DISPATCH_HOST_APP_ROOT locally to that application's directory before running it. The check only reads HTML files; host files and local paths are not included in this repository.
+
+Validated with Node.js 24.12.0: all 56 offline tests passed with no skips, the separate host-navigation check passed, and all 46 JavaScript files passed syntax checks. No database integration tests or migration scripts were run.
+
+Gitleaks found no secrets in the source or committed history. A separate exact-value check found no matches for the populated local database credential values.

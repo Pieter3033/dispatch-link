@@ -5,6 +5,8 @@
   "description": "Dispatch Link module with Express, SQL Server, and a Pulsit-matched UI shell.",
   "main": "src/server.js",
   "scripts": {
+    "test": "node --test tests/*.test.cjs",
+    "test:host-navigation": "node --test tests/vesa-host-navigation.integration.cjs",
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
     "check": "node -e \"require('./src/app'); console.log('app ok')\""

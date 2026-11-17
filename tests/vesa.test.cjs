@@ -92,10 +92,6 @@ test('VESA navigation is present after Completed with the correct table headings
     assert.match(html, /href="completed\.html"[\s\S]*href="vesa\.html"[^>]*data-show-for-user-type="7" hidden/);
     assert.doesNotMatch(html, /href="vesa\.html"[^>]*data-show-for-dispatch-operations/);
   }
-  for (const name of ['index', 'dashboard', 'escalations', 'quick_logs', 'completed_quick_logs', 'quick_log_dashboard']) {
-    const html = fs.readFileSync(path.join(root, `../internaltickets/${name}.html`), 'utf8');
-    assert.match(html, /href="\/dispatch_link\/public\/vesa\.html" data-show-for-user-type="7" hidden/);
-  }
   const html = fs.readFileSync(path.join(root, 'public/vesa.html'), 'utf8');
   assert.deepEqual([...html.matchAll(/<th>(.*?)<\/th>/g)].map(match => match[1]), ['Registration', 'Company', 'Dispatch OB', 'Zoho OB']);
   assert.match(html, /href="vesa\.html" aria-current="page"/);
@@ -107,7 +103,7 @@ test('VESA sidebar link is visible only to the existing Admin role', () => {
     state: { currentUser: null },
     document: { querySelectorAll: selector => selector === '[data-hide-for-user-type], [data-show-for-user-type]' ? [link] : [] }
   });
-  for (const name of ['canViewDispatchLink', 'canViewDispatchOperations', 'canViewEtaRequests', 'syncSidebarAccess']) vm.runInContext(functionSource(name), c);
+  for (const name of ['isCompletedDispatchViewer', 'canViewDispatchLink', 'canViewDispatchOperations', 'canViewEtaRequests', 'syncSidebarAccess']) vm.runInContext(functionSource(name), c);
   for (const userType of [null, '0', '1', '7', '8', '11', '12', '13', '14']) {
     c.state.currentUser = { userType, helpdesk: true, etaRole: 'CallCentre', canViewDispatchOperations: true };
     c.syncSidebarAccess();
@@ -117,12 +113,13 @@ test('VESA sidebar link is visible only to the existing Admin role', () => {
 
 test('direct VESA page access redirects non-admins and accepts all admins without a name allowlist', async () => {
   for (const user of [
-    { name: 'Jaundre', userType: '7', isApprover: true },
-    { name: 'Approver3', userType: '7', isApprover: true },
+    { name: 'First Admin', userType: '7', isApprover: true },
+    { name: 'Second Admin', userType: '7', isApprover: true },
     { name: 'Another Admin', userType: '7', isApprover: true },
     { name: 'Operator', userType: '8', isApprover: false },
     { name: 'Call Centre', userType: '14', isApprover: false },
-    { name: 'Helpdesk', userType: '1', helpdesk: true, isApprover: false }
+    { name: 'Helpdesk', userType: '1', helpdesk: true, isApprover: false },
+    { name: 'Completed Viewer', userType: '15', completedDispatchOnly: true, isApprover: false }
   ]) {
     const calls = [];
     const c = vm.createContext({
@@ -131,7 +128,7 @@ test('direct VESA page access redirects non-admins and accepts all admins withou
       window: { location: { replace: target => { throw new Error(`Redirect:${target}`); } } },
       renderCurrentUser: () => calls.push('render'), syncSidebarAccess: () => calls.push('sidebar')
     });
-    for (const name of ['applyStandardEtaProfile', 'isDispatchAdmin', 'loadCurrentUser']) vm.runInContext(functionSource(name), c);
+    for (const name of ['applyStandardEtaProfile', 'isDispatchAdmin', 'isCompletedDispatchViewer', 'syncCompletedViewerAccess', 'loadCurrentUser']) vm.runInContext(functionSource(name), c);
     if (user.isApprover) {
       await c.loadCurrentUser();
       assert.deepEqual(calls, ['render', 'sidebar']);

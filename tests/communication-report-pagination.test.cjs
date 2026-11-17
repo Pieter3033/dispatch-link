@@ -2,7 +2,8 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const { Writable } = require('node:stream');
 const PDFDocument = require('pdfkit');
-const { generateCommunicationLogReport } = require('../src/services/incidentReportService');
+const { loadIncidentReportService } = require('./helpers/incident-report.cjs');
+const { generateCommunicationLogReport } = loadIncidentReportService();
 
 test('long communication comments paginate without crossing the footer or losing text', async () => {
   const originalText = PDFDocument.prototype.text;

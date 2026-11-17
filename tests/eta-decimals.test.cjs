@@ -155,9 +155,9 @@ test('ETA editing follows dispatch status and view mode, including reopening ret
 
 test('input handling preserves decimal points and retains digit-only behavior on other fields', () => {
   const f = setup();
-  const start = source.indexOf('  elements.form?.addEventListener("input",');
-  const end = source.indexOf('  window.addEventListener("pagehide",', start);
-  vm.runInContext(source.slice(start, end), f.context);
+  const inputListener = source.match(/^  elements\.form\?\.addEventListener\("input",[\s\S]*?^  \}\);/m);
+  assert.ok(inputListener, 'The form input listener exists');
+  vm.runInContext(inputListener[0], f.context);
   const field = (value, digitsOnly = false) => ({
     name: digitsOnly ? 'clientPo' : 'eta', value,
     matches(selector) {
@@ -177,10 +177,11 @@ test('input handling preserves decimal points and retains digit-only behavior on
 });
 
 test('incident reports retain fractional and whole kilometre values from supplied data', async () => {
-  // Supply fixture data directly; the renderer does not fetch database records.
+  // Render real PDFs with fixtures; database/environment imports are isolated.
   const { Writable } = require('node:stream');
   const PDFDocument = require('pdfkit');
-  const { generateIncidentReport } = require(path.join(process.env.DISPATCH_SQLPAGE_WORKSPACE || root, 'src/services/incidentReportService'));
+  const { loadIncidentReportService } = require('./helpers/incident-report.cjs');
+  const { generateIncidentReport } = loadIncidentReportService();
   const originalText = PDFDocument.prototype.text;
   const seen = [];
   PDFDocument.prototype.text = function(value) {
