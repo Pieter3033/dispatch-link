@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <meta name="referrer" content="no-referrer">
+    <title>Dispatch Evidence | Pulsit</title>
+    <link rel="icon" href="assets/favicon.png">
+    <link rel="stylesheet" href="evidence.css?v=20260908-ui-scale-80-v1">
+    <script src="evidence.js?v=20260805-1" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-header-inner">
+        <img src="images/pulsit-logo-white1.png" alt="Pulsit Electronics" class="brand-logo">
+        <div class="header-label">
+                <span>Dispatches</span>
+          <strong>Evidence record</strong>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-shell">
+      <section id="loadingState" class="state-card" aria-live="polite">
+        <span class="loading-spinner" aria-hidden="true"></span>
+        <div>
+          <strong>Loading dispatch evidence</strong>
+          <p>Please wait while the record is retrieved.</p>
+        </div>
+      </section>
+
+      <section id="errorState" class="state-card state-card-error" hidden aria-live="assertive">
+        <span class="state-icon" aria-hidden="true">!</span>
+        <div>
+          <strong>Evidence record unavailable</strong>
+          <p id="errorMessage">The link is invalid or the incident is not available for public viewing.</p>
+        </div>
+      </section>
+
+      <article id="evidenceRecord" hidden>
+        <section class="record-hero">
+          <div class="hero-copy">
+            <p class="eyebrow">Dispatch Images</p>
+            <h1 id="incidentNumber">Dispatch record</h1>
+            <p id="heroSummary" class="hero-summary"></p>
+          </div>
+        </section>
+
+        <section id="headlineFacts" class="headline-facts" aria-label="Dispatch summary"></section>
+
+        <section class="evidence-section">
+          <div class="evidence-heading">
+            <div>
+              <h2>Dispatch evidence</h2>
+            </div>
+            <span id="photoCount" class="photo-count"></span>
+          </div>
+          <div id="photoGallery" class="photo-gallery"></div>
+          <div id="emptyPhotos" class="empty-photos" hidden>
+            <strong>No photographs available</strong>
+            <span>No evidence images are attached to this dispatch.</span>
+          </div>
+        </section>
+
+        <footer class="record-footer">
+          <span>Read-only dispatch evidence</span>
+          <span id="recordReference"></span>
+        </footer>
+      </article>
+    </main>
+
+    <dialog id="photoViewer" class="photo-viewer" aria-label="Evidence photograph viewer">
+      <div class="viewer-toolbar">
+        <div>
+          <strong id="viewerTitle"></strong>
+          <span id="viewerMeta"></span>
+        </div>
+        <button id="closeViewer" class="viewer-button viewer-close" type="button" aria-label="Close photograph viewer">&times;</button>
+      </div>
+      <div class="viewer-stage">
+        <button id="previousPhoto" class="viewer-button viewer-arrow" type="button" aria-label="Previous photograph">&#8249;</button>
+        <img id="viewerImage" alt="">
+        <button id="nextPhoto" class="viewer-button viewer-arrow" type="button" aria-label="Next photograph">&#8250;</button>
+      </div>
+      <p id="viewerNotes" class="viewer-notes"></p>
+    </dialog>
+  </body>
+</html>

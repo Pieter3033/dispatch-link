@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en" class="auth-pending">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pulsit Dispatch Link - ETA Requests</title>
+    <link rel="icon" href="assets/favicon.png">
+    <script>
+      document.documentElement.classList.add("auth-pending");
+      document.documentElement.dataset.theme = localStorage.getItem("srf-jobcard-theme") === "light" ? "light" : "dark";
+    </script>
+    <link rel="stylesheet" href="styles.css?v=20261112-reader-menu-2">
+    <script src="auth-guard.js?v=20261112-reader-menu-2" defer></script>
+    <script src="eta-notifications.js?v=20261022-street-alarm-3" defer></script>
+    <script src="eta-requests.js?v=20261029-callcentre-nav-v1" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="app-sidebar sidebar">
+        <div class="sidebar-mobile-bar">
+          <div class="sidebar-brand" aria-label="Pulsit SRF">
+            <img class="sidebar-logo" src="/SRF/newui/logowhite_3.png" alt="Pulsit Electronics">
+          </div>
+          <button class="sidebar-collapse-button" id="sidebarCollapseButton" type="button" aria-label="Collapse sidebar" title="Collapse sidebar" aria-expanded="true">
+            <svg class="sidebar-menu-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg>
+            <span>Menu</span>
+          </button>
+        </div>
+
+        <nav class="sidebar-nav" aria-label="Primary">
+          <section class="nav-section" data-sidebar-group="new-jobcard" data-show-for-call-centre data-hide-for-user-type="7,8" hidden>
+            <div class="nav-section-title" data-sidebar-toggle role="button" tabindex="0" aria-expanded="false">
+              <span class="nav-section-label">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+                <span>New Jobcard</span>
+              </span>
+              <svg class="sidebar-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+            </div>
+            <a class="nav-sublink" href="/SRF/newui/app/index.html?page=create&amp;system=mstrack"><span>MSTrack</span></a>
+            <a class="nav-sublink" href="/SRF/newui/app/index.html?page=create&amp;system=galaxy"><span>Galaxy</span></a>
+            <a class="nav-sublink" href="/SRF/newui/app/index.html?page=create&amp;system=cameras"><span>Cameras</span></a>
+            <a class="nav-sublink" href="/SRF/newui/app/index.html?page=create&amp;system=other"><span>Other</span></a>
+          </section>
+
+          <section class="nav-section" data-sidebar-group="jobcards" data-show-for-call-centre data-hide-for-user-type="7,8" hidden>
+            <div class="nav-section-title" data-sidebar-toggle role="button" tabindex="0" aria-expanded="false">
+              <span class="nav-section-label">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11"></path><path d="M9 12h11"></path><path d="M9 18h11"></path><path d="M4 6h.01"></path><path d="M4 12h.01"></path><path d="M4 18h.01"></path></svg>
+                <span>View Jobcards</span>
+              </span>
+              <svg class="sidebar-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+            </div>
+            <a class="nav-sublink" href="/SRF/newui/active.sql">
+              <svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l2.2-5 3.6 10 2.2-5H21"></path></svg>
+              <span>Active Jobs</span>
+            </a>
+            <a class="nav-sublink" href="/SRF/newui/completed.sql">
+              <svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><path d="m8.5 12 2.3 2.3L15.8 9.5"></path></svg>
+              <span>Completed Jobs</span>
+            </a>
+            <a class="nav-sublink" href="/SRF/newui/reschedule.sql">
+              <svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 2v5h-5"></path><path d="M19 11a7 7 0 0 0-11.9-5"></path><path d="M7 22v-5h5"></path><path d="M5 13a7 7 0 0 0 11.9 5"></path></svg>
+              <span>Reschedule Jobcards</span>
+            </a>
+            <a class="nav-sublink" href="/SRF/newui/approval.sql">
+              <svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"></path><path d="M5 20a7 7 0 0 1 14 0"></path></svg>
+              <span>Pending Jobcards</span>
+            </a>
+          </section>
+
+
+          <section class="nav-section" data-sidebar-group="escalations" data-show-for-call-centre hidden>
+            <div class="nav-section-title" data-sidebar-toggle role="button" tabindex="0" aria-expanded="true">
+              <span class="nav-section-label"><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18"></path><path d="M5 8h14"></path><path d="M7 16h10"></path></svg><span>Escalations</span></span>
+              <svg class="sidebar-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+            </div>
+            <a class="nav-sublink" href="/internaltickets/escalations.html?nav=20260804-eta-v1"><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v4H4z"></path><path d="M4 15h16v4H4z"></path><path d="M8 9v6"></path><path d="M16 9v6"></path></svg><span>Escalation View</span></a>
+            <a class="nav-sublink" href="/cc_escalation/unique%20escalation/add.sql" target="_blank" rel="noopener noreferrer" data-show-for-user-type="7" hidden><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path><path d="M7 7h10v10H7z"></path></svg><span>Unique Escalation</span></a>
+            <a class="nav-sublink is-disabled" href="/internaltickets/quick_logs.html?nav=20260804-eta-v1" aria-disabled="true" tabindex="-1"><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"></path></svg><span>Quick Log</span></a>
+          </section>
+
+          <section class="nav-section" data-sidebar-group="tickets" data-show-for-call-centre hidden>
+            <div class="nav-section-title" data-sidebar-toggle role="button" tabindex="0" aria-expanded="true">
+              <span class="nav-section-label"><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11"></path><path d="M9 12h11"></path><path d="M9 18h11"></path><path d="M4 6h.01"></path><path d="M4 12h.01"></path><path d="M4 18h.01"></path></svg><span>Tickets</span></span>
+              <svg class="sidebar-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+            </div>
+            <a class="nav-sublink" href="/internaltickets/index.html?nav=20260804-eta-v1"><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l2.2-5 3.6 10 2.2-5H21"></path></svg><span class="nav-label"><span>Active Tickets</span><strong class="nav-count" data-nav-count="active">0</strong></span></a>
+            <a class="nav-sublink" href="/internaltickets/index.html?department=Helpdesk&amp;nav=20260804-eta-v1"><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="6" width="3" height="12" rx="1"></rect><rect x="14" y="6" width="3" height="12" rx="1"></rect></svg><span class="nav-label"><span>Helpdesk</span><strong class="nav-count" data-nav-count="helpdesk">0</strong></span></a>
+            <a class="nav-sublink" href="/internaltickets/index.html?department=CC" data-nav-filter="callcentre" data-call-centre-link data-hide-for-user-type="12,13" hidden><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13v-2a8 8 0 0 1 16 0v2"></path><rect x="3" y="11" width="4" height="7" rx="2"></rect><rect x="17" y="11" width="4" height="7" rx="2"></rect><path d="M19 18c0 2-3 3-7 3"></path></svg><span class="nav-label"><span>Call Centre</span><strong class="nav-count" data-nav-count="callcentre">0</strong></span></a>
+            <a class="nav-sublink" href="/internaltickets/index.html?department=Pulscam&amp;nav=20260804-eta-v1"><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="7" width="13" height="10" rx="2"></rect><path d="m17 10 4-2v8l-4-2"></path><path d="M8 11h.01"></path></svg><span class="nav-label"><span>Pulscam</span><strong class="nav-count" data-nav-count="pulscam">0</strong></span></a>
+            <a class="nav-sublink is-disabled" href="/internaltickets/index.html?department=TAD" aria-disabled="true" tabindex="-1"><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4H6a2 2 0 0 0-2 2v2"></path><path d="M16 4h2a2 2 0 0 1 2 2v2"></path><path d="M20 16v2a2 2 0 0 1-2 2h-2"></path><path d="M4 16v2a2 2 0 0 0 2 2h2"></path><path d="M9 12h6"></path><path d="M12 9v6"></path></svg><span class="nav-label"><span>TAD</span><strong class="nav-count" data-nav-count="tad">0</strong></span></a>
+            <a class="nav-sublink" href="/internaltickets/index.html?status=Closed&amp;nav=20260804-eta-v1"><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><path d="m8.5 12 2.3 2.3L15.8 9.5"></path></svg><span>Closed Tickets</span></a>
+          </section>
+
+          <section class="nav-section" data-sidebar-group="dispatch" data-show-for-dispatch-access hidden>
+            <div class="nav-section-title is-active" data-sidebar-toggle role="button" tabindex="0" aria-expanded="true">
+              <span class="nav-section-label">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13h3l3-8 4 14 3-8h5"></path></svg>
+                <span>Dispatches</span>
+              </span>
+              <svg class="sidebar-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+            </div>
+            <a class="nav-sublink active" href="eta-requests.html?v=20260804-nav-v5" data-show-for-eta-access hidden>
+              <svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s6-5.1 6-11a6 6 0 1 0-12 0c0 5.9 6 11 6 11Z"></path><circle cx="12" cy="10" r="2"></circle></svg>
+              <span class="nav-label"><span>ETA Requests</span><strong class="nav-count" data-eta-request-count hidden>0</strong></span>
+            </a>
+            <a class="nav-sublink" href="index.html#incidents" data-show-for-dispatch-operations hidden>
+              <svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4z"></path><path d="M8 9h8"></path><path d="M8 13h5"></path></svg>
+              <span class="nav-label"><span>Active Dispatches</span><strong class="nav-count" data-summary-count="draftCount">0</strong></span>
+            </a>
+            <a class="nav-sublink" href="team-dispatches.html" data-show-for-dispatch-team hidden>
+              <svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4z"></path><path d="M8 9h8"></path><path d="M8 13h5"></path></svg>
+              <span class="nav-label"><span>Active Dispatches</span><strong class="nav-count" data-team-active-dispatch-count hidden>0</strong></span>
+            </a>
+            <a class="nav-sublink" href="team-dispatches.html?view=completed" data-show-for-dispatch-team hidden>
+              <svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="1"></rect><path d="m8 12 2.5 2.5L16 9"></path></svg>
+              <span class="nav-label"><span>Completed Dispatches</span><strong class="nav-count" data-team-completed-dispatch-count hidden>0</strong></span>
+            </a>
+            <a class="nav-sublink" href="index.html#approvals" data-show-for-dispatch-operations hidden>
+              <svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 7v5c0 5 3.4 8.8 8 10 4.6-1.2 8-5 8-10V7l-8-4Z"></path><path d="m8.5 12 2.2 2.2 4.8-4.8"></path></svg>
+              <span class="nav-label"><span>Dispatch Approvals</span><strong class="nav-count" data-summary-count="pendingCount">0</strong></span>
+            </a>
+            <a class="nav-sublink" href="completed.html" data-show-for-dispatch-operations hidden>
+              <svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><path d="m8.5 12 2.3 2.3L15.8 9.5"></path></svg>
+              <span class="nav-label"><span>Completed</span><strong class="nav-count" data-summary-count="approvedCount">0</strong></span>
+            </a>
+            <a class="nav-sublink" href="vesa.html" data-show-for-user-type="7" hidden><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 7v5c0 5 3.4 8.8 8 10 4.6-1.2 8-5 8-10V7l-8-4Z"></path><path d="m8.5 12 2.2 2.2 4.8-4.8"></path></svg><span>VESA</span></a>
+            <a class="nav-sublink" href="cancelled.html" data-show-for-user-type="7" hidden>
+              <svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10a8 8 0 1 1 2.3 5.7"></path><path d="M4 4v6h6"></path></svg>
+              <span class="nav-label"><span>Cancelled</span><strong class="nav-count" data-summary-count="cancelledDispatchCount">0</strong></span>
+            </a>
+          </section>
+
+          <section class="nav-section" data-sidebar-group="dashboards" data-show-for-call-centre data-show-for-user-type="7" hidden>
+            <div class="nav-section-title" data-sidebar-toggle role="button" tabindex="0" aria-expanded="true">
+              <span class="nav-section-label"><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5"></path><path d="M4 19h16"></path><path d="M8 16v-5"></path><path d="M13 16V8"></path><path d="M18 16v-3"></path></svg><span>Dashboards</span></span>
+              <svg class="sidebar-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+            </div>
+            <a class="nav-sublink" href="/internaltickets/dashboard.html"><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h6l2 2h10v11H3V6z"></path><path d="M8 16v-5"></path><path d="M13 16V9"></path><path d="M18 16v-3"></path></svg><span>Tickets Dashboard</span></a>
+            <a class="nav-sublink" href="/internaltickets/quick_log_dashboard.html"><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"></path><path d="M8 9h8"></path><path d="M8 13h5"></path></svg><span>Quick Log Dashboard</span></a>
+            <a class="nav-sublink" href="/dispatch_link/public/dispatch-dashboard.html"><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5"></path><path d="M4 19h16"></path><path d="M8 16v-5"></path><path d="M13 16V8"></path><path d="M18 16v-3"></path></svg><span>Dispatches Dashboard</span></a>
+          </section>
+
+          <section class="nav-section" data-sidebar-group="settings">
+            <div class="nav-section-title" data-sidebar-toggle role="button" tabindex="0" aria-expanded="true">
+              <span class="nav-section-label">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v2.2"></path><path d="M12 18.8V21"></path><path d="M3 12h2.2"></path><path d="M18.8 12H21"></path><circle cx="12" cy="12" r="3.5"></circle></svg>
+                <span>Settings</span>
+              </span>
+              <svg class="sidebar-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+            </div>
+            <a class="nav-sublink" href="/pause%20events/index.html" target="_blank" rel="noreferrer" data-show-for-user-type="7" hidden><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="6" width="3" height="12" rx="1"></rect><rect x="14" y="6" width="3" height="12" rx="1"></rect></svg><span>Pause Events Monitor</span></a>
+            <div class="sidebar-toggle-row">
+              <span class="sidebar-toggle-label">Theme</span>
+              <label class="theme-switch" aria-label="Switch color theme">
+                <input class="theme-switch__checkbox" id="themeToggle" type="checkbox">
+                <span class="theme-switch__container" aria-hidden="true">
+                  <span class="theme-switch__clouds"></span>
+                  <span class="theme-switch__stars-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 55" fill="none">
+                      <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M135.8 3c-.8.9-1.7 1.3-2.8 1.4 1.1.1 2 .5 2.8 1.4.8.8 1.2 1.8 1.2 2.9 0-.8.2-1.5.5-2.1.4-.7.9-1.2 1.5-1.6.6-.4 1.3-.6 2-.6-1.1-.1-2-.5-2.8-1.4-.8-.8-1.2-1.8-1.2-3 0 1.2-.4 2.2-1.2 3ZM31 23.4c1.1-.1 2.1-.5 2.8-1.4.8-.8 1.2-1.8 1.2-3 0 1.2.4 2.2 1.2 3 .8.9 1.7 1.3 2.8 1.4-.7 0-1.4.2-2 .6-.6.4-1.1.9-1.5 1.6-.3.6-.5 1.3-.5 2.1 0-1.2-.4-2.2-1.2-3-.7-.9-1.7-1.3-2.8-1.3ZM0 36.4c1.1-.1 2.1-.5 2.8-1.4.8-.8 1.2-1.8 1.2-3 0 1.2.4 2.2 1.2 3 .8.9 1.7 1.3 2.8 1.4-.7 0-1.4.2-2 .6-.6.4-1.1.9-1.5 1.6-.3.6-.5 1.3-.5 2.1 0-1.2-.4-2.2-1.2-3C2.1 36.8 1.1 36.4 0 36.4Zm56.8-12.4c-.8.8-1.7 1.3-2.8 1.4 1.1.1 2 .5 2.8 1.4.8.8 1.2 1.8 1.2 2.9 0-.8.2-1.5.5-2.1.4-.7.9-1.2 1.5-1.6.6-.4 1.3-.6 2-.6-1.1-.1-2-.5-2.8-1.4-.8-.8-1.2-1.8-1.2-3 0 1.2-.4 2.2-1.2 3Z"/>
+                    </svg>
+                  </span>
+                  <span class="theme-switch__circle-container">
+                    <span class="theme-switch__sun-moon-container">
+                      <span class="theme-switch__moon">
+                        <span class="theme-switch__spot"></span>
+                        <span class="theme-switch__spot"></span>
+                        <span class="theme-switch__spot"></span>
+                      </span>
+                    </span>
+                  </span>
+                </span>
+              </label>
+            </div>
+            <a class="nav-sublink" href="/signin.sql"><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><path d="M16 17l5-5-5-5"></path><path d="M21 12H9"></path></svg><span>Logout</span></a>
+          </section>
+        </nav>
+
+        <div class="support" id="etaSidebarProfile">
+          <div class="support-user">
+            <div class="user-avatar" id="userAvatar">ETA</div>
+            <div><strong id="userDisplayName">Loading profile</strong><small id="userRoleLabel">Checking ETA access</small></div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="content content-list eta-page">
+        <section class="dashboard">
+          <header class="eta-page-hero">
+            <div>
+              <h1>ETA Requests</h1>
+              <p id="etaPageSubtitle">Send coordinates to every dispatch team and compare their nearest available ground teams.</p>
+            </div>
+            <div class="eta-profile-pill" id="etaProfilePill">Loading access…</div>
+          </header>
+
+          <div id="etaNotice" class="notice" hidden aria-live="polite"></div>
+
+          <section id="etaAccessDenied" class="eta-access-panel" hidden>
+            <div class="eta-empty-icon" aria-hidden="true">!</div>
+            <h2>ETA Requests access is not assigned</h2>
+            <p>This signed-in profile is not mapped to the Call Centre or a dispatch team group.</p>
+          </section>
+
+          <section id="etaSetupRequired" class="eta-access-panel" hidden>
+            <div class="eta-empty-icon" aria-hidden="true">!</div>
+            <h2>ETA Requests could not be loaded</h2>
+            <p>The API returned an invalid or unavailable response. Refresh the page or contact an administrator if the problem continues.</p>
+          </section>
+
+          <div id="etaWorkspace" hidden>
+            <section class="eta-quota-card" id="etaMatrixQuota" hidden aria-label="Matrix monthly dispatch quota">
+              <div class="eta-quota-copy">
+                <span class="eta-step">Monthly partner allowance</span>
+                <h2>Matrix dispatch capacity</h2>
+                <p><strong id="etaMatrixRemaining">—</strong> of <span id="etaMatrixLimit">150</span> dispatches remaining for <span id="etaMatrixPeriod">this month</span>.</p>
+              </div>
+              <div class="eta-quota-metrics">
+                <span><b id="etaMatrixUsed">0</b><small>Used</small></span>
+                <span><b id="etaMatrixPending">0</b><small>Pending</small></span>
+                <span class="eta-quota-available"><b id="etaMatrixAvailable">—</b><small>Unreserved</small></span>
+              </div>
+              <div class="eta-quota-track" aria-hidden="true"><span id="etaMatrixProgress"></span></div>
+            </section>
+            <section class="eta-create-card" id="etaCreatePanel" hidden>
+              <div class="eta-card-heading">
+                <div>
+                  <span class="eta-step">New request</span>
+                  <h2>Request the nearest ground team</h2>
+                </div>
+              </div>
+              <form id="etaRequestForm" class="eta-request-form" autocomplete="off">
+                <label>
+                  <span>Latitude <strong>*</strong></span>
+                  <input name="latitude" type="number" inputmode="decimal" min="-90" max="90" step="any" placeholder="-26.204100" required>
+                </label>
+                <label>
+                  <span>Longitude <strong>*</strong></span>
+                  <input name="longitude" type="number" inputmode="decimal" min="-180" max="180" step="any" placeholder="28.047300" required>
+                </label>
+                <label>
+                  <span>Registration <strong>*</strong></span>
+                  <input name="registration" maxlength="100" placeholder="Vehicle registration" required>
+                </label>
+                <label>
+                  <span>Incident Type <strong>*</strong></span>
+                  <select name="incidentType" required>
+                    <option value="">Select incident type</option>
+                    <option>Accident</option>
+                    <option>After Hours Movement</option>
+                    <option>Armed Robbery</option>
+                    <option>Attempted Hijacking</option>
+                    <option>Battery Critical</option>
+                    <option>Battery Disconnect</option>
+                    <option>Breakdown</option>
+                    <option>Breaking Convoy</option>
+                    <option>Bureau Update</option>
+                    <option>Camera Cover</option>
+                    <option>Canopy Lock</option>
+                    <option>Canopy Unlock</option>
+                    <option>Capital Air Dispatch</option>
+                    <option>Cargo Area Panic</option>
+                    <option>Cargo Door Lock</option>
+                    <option>Cargo Door Unlock</option>
+                    <option>Convoy Break</option>
+                    <option>Customer Request</option>
+                    <option>C_Lock - Lock</option>
+                    <option>C_Lock - Unlock</option>
+                    <option>Door Possible Hijack</option>
+                    <option>Escort Request</option>
+                    <option>ETA Request</option>
+                    <option>Fatigue Event</option>
+                    <option>Fuel Drop</option>
+                    <option>Gate Jamming Detected</option>
+                    <option>Guarding Services</option>
+                    <option>Harness Tamper</option>
+                    <option>Hijacking</option>
+                    <option>Jamming Detected</option>
+                    <option>Jamming Timer Expired</option>
+                    <option>Limp Geofence Entrance</option>
+                    <option>Maglock Locked</option>
+                    <option>Maglock Unlocked</option>
+                    <option>Max Time Exceeded</option>
+                    <option>Moving Into Geofence</option>
+                    <option>Moving Out Of Geofence</option>
+                    <option>Net Alarm</option>
+                    <option>Off Route</option>
+                    <option>OTA Limp mode</option>
+                    <option>OTA Limp Mode Test</option>
+                    <option>Panic</option>
+                    <option>Panic Test</option>
+                    <option>Protest Action</option>
+                    <option>PTO Disabled</option>
+                    <option>PTO Enabled</option>
+                    <option>Reload</option>
+                    <option>Reload Copper Tracking - Clamped</option>
+                    <option>Reload Dispatch</option>
+                    <option>Removed Received</option>
+                    <option>Tailgate Locked</option>
+                    <option>Tailgate Unlocked</option>
+                    <option>Tamper</option>
+                    <option>Technical Event</option>
+                    <option>Tilt</option>
+                    <option>Trailer Disconnect</option>
+                    <option>Travel Stop</option>
+                    <option>Unauthorised Driving</option>
+                    <option>Unit Not Updating</option>
+                    <option>Unlimp Vehicle</option>
+                    <option>Upliftment</option>
+                    <option>Vehicle Theft</option>
+                  </select>
+                </label>
+                <div class="eta-form-actions">
+                  <button class="filter-button" type="submit" id="etaCreateButton">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+                    Send to all teams
+                  </button>
+                </div>
+              </form>
+            </section>
+
+            <section class="eta-register-card">
+              <div class="eta-card-heading eta-register-heading">
+                <div>
+                  <h2 id="etaRegisterTitle">ETA requests</h2>
+                </div>
+                <div class="eta-register-actions">
+                  <button class="filter-button secondary compact" id="etaRefreshButton" type="button">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6v5h-5"></path><path d="M4 18v-5h5"></path><path d="M18 9a7 7 0 0 0-12-3"></path><path d="M6 15a7 7 0 0 0 12 3"></path></svg>
+                    Refresh
+                  </button>
+                </div>
+              </div>
+              <div id="etaRequestList" class="eta-request-list" aria-live="polite">
+                <div class="eta-loading">Loading ETA requests…</div>
+              </div>
+            </section>
+
+            <details class="eta-history-card" id="etaHistoryPanel">
+              <summary>
+                <div>
+                  <strong>Historical ETA requests</strong>
+                </div>
+                <span class="eta-history-total"><b id="etaHistoryCount">0</b> records <span aria-hidden="true">⌄</span></span>
+              </summary>
+              <div class="eta-history-tools">
+                <label for="etaHistorySearch">Filter by registration</label>
+                <input id="etaHistorySearch" type="search" placeholder="Registration" autocomplete="off" />
+              </div>
+              <div class="eta-history-table-wrap">
+                <table class="eta-history-table">
+                  <thead id="etaHistoryHead"></thead>
+                  <tbody id="etaHistoryBody"></tbody>
+                </table>
+              </div>
+              <div class="eta-history-pagination" id="etaHistoryPagination" hidden>
+                <button class="filter-button secondary compact" id="etaHistoryPrevious" type="button" aria-label="Previous page">←</button>
+                <span id="etaHistoryPageStatus" aria-live="polite"></span>
+                <button class="filter-button secondary compact" id="etaHistoryNext" type="button" aria-label="Next page">→</button>
+              </div>
+            </details>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="eta-confirm-overlay" id="etaConfirmOverlay" hidden>
+      <section
+        class="eta-confirm-dialog"
+        id="etaConfirmDialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="etaConfirmTitle"
+        aria-describedby="etaConfirmMessage"
+      >
+        <button class="eta-confirm-close" id="etaConfirmClose" type="button" aria-label="Close dialog">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg>
+        </button>
+        <h2 id="etaConfirmTitle">Confirm action</h2>
+        <p id="etaConfirmMessage"></p>
+        <div class="eta-confirm-actions">
+          <button class="filter-button secondary" id="etaConfirmCancel" type="button">Go back</button>
+          <button class="filter-button eta-confirm-accept" id="etaConfirmAccept" type="button">Confirm</button>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

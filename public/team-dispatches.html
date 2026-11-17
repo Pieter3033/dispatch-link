@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en" class="auth-pending">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pulsit Dispatch Link - Team Dispatches</title>
+    <link rel="icon" href="assets/favicon.png">
+    <script>
+      document.documentElement.classList.add("auth-pending");
+      document.documentElement.dataset.theme = localStorage.getItem("srf-jobcard-theme") === "light" ? "light" : "dark";
+    </script>
+    <link rel="stylesheet" href="styles.css?v=20261112-reader-menu-2">
+    <script src="auth-guard.js?v=20261112-reader-menu-2" defer></script>
+    <script src="eta-notifications.js?v=20261022-street-alarm-3" defer></script>
+    <script src="team-dispatches.js?v=20261022-eta-alerts-v1" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="app-sidebar sidebar">
+        <div class="sidebar-mobile-bar">
+          <div class="sidebar-brand" aria-label="Pulsit SRF">
+            <img class="sidebar-logo" src="/SRF/newui/logowhite_3.png" alt="Pulsit Electronics">
+          </div>
+          <button class="sidebar-collapse-button" id="sidebarCollapseButton" type="button" aria-label="Collapse sidebar" title="Collapse sidebar" aria-expanded="true">
+            <svg class="sidebar-menu-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg>
+            <span>Menu</span>
+          </button>
+        </div>
+
+        <nav class="sidebar-nav" aria-label="Primary">
+          <section class="nav-section" data-sidebar-group="dispatch" id="teamDispatchNav" hidden>
+            <div class="nav-section-title is-active" data-sidebar-toggle role="button" tabindex="0" aria-expanded="true">
+              <span class="nav-section-label">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13h3l3-8 4 14 3-8h5"></path></svg>
+                <span>Dispatches</span>
+              </span>
+              <svg class="sidebar-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+            </div>
+            <a class="nav-sublink" href="eta-requests.html">
+              <svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s6-5.1 6-11a6 6 0 1 0-12 0c0 5.9 6 11 6 11Z"></path><circle cx="12" cy="10" r="2"></circle></svg>
+              <span class="nav-label"><span>ETA Requests</span><strong class="nav-count" id="teamEtaCount" hidden>0</strong></span>
+            </a>
+            <a class="nav-sublink active" href="team-dispatches.html" aria-current="page">
+              <svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4z"></path><path d="M8 9h8"></path><path d="M8 13h5"></path></svg>
+              <span class="nav-label"><span>Active Dispatches</span><strong class="nav-count" id="teamActiveCountNav" hidden>0</strong></span>
+            </a>
+            <a class="nav-sublink" href="team-dispatches.html?view=completed" id="teamCompletedNav">
+              <svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4z"></path><path d="m8 12 3 3 5-6"></path></svg>
+              <span class="nav-label"><span>Completed Dispatches</span><strong class="nav-count" id="teamCompletedCountNav" hidden>0</strong></span>
+            </a>
+          </section>
+
+          <section class="nav-section" data-sidebar-group="settings">
+            <div class="nav-section-title" data-sidebar-toggle role="button" tabindex="0" aria-expanded="true">
+              <span class="nav-section-label">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v2.2"></path><path d="M12 18.8V21"></path><path d="M3 12h2.2"></path><path d="M18.8 12H21"></path><circle cx="12" cy="12" r="3.5"></circle></svg>
+                <span>Settings</span>
+              </span>
+              <svg class="sidebar-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+            </div>
+            <div class="sidebar-toggle-row">
+              <span class="sidebar-toggle-label">Theme</span>
+              <label class="theme-switch" aria-label="Switch color theme">
+                <input class="theme-switch__checkbox" id="themeToggle" type="checkbox">
+                <span class="theme-switch__container" aria-hidden="true">
+                  <span class="theme-switch__clouds"></span>
+                  <span class="theme-switch__stars-container"></span>
+                  <span class="theme-switch__circle-container"><span class="theme-switch__sun-moon-container"><span class="theme-switch__moon"><span class="theme-switch__spot"></span><span class="theme-switch__spot"></span><span class="theme-switch__spot"></span></span></span></span>
+                </span>
+              </label>
+            </div>
+            <a class="nav-sublink" href="/signin.sql">
+              <svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><path d="M16 17l5-5-5-5"></path><path d="M21 12H9"></path></svg>
+              <span>Logout</span>
+            </a>
+          </section>
+        </nav>
+
+        <div class="support" id="teamSidebarProfile">
+          <div class="support-user">
+            <div class="user-avatar" id="teamUserAvatar">DT</div>
+            <div><strong id="teamUserDisplayName">Loading profile</strong><small id="teamUserRoleLabel">Checking dispatch access</small></div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="content content-list eta-page team-dispatch-page">
+        <section class="dashboard">
+          <header class="eta-page-hero">
+            <div>
+              <h1 id="teamDispatchPageTitle">Active Dispatches</h1>
+            </div>
+            <div class="eta-profile-pill" id="teamProfilePill">Loading access...</div>
+          </header>
+
+          <div id="teamDispatchNotice" class="notice" hidden aria-live="polite"></div>
+
+          <section id="teamDispatchAccessDenied" class="eta-access-panel" hidden>
+            <div class="eta-empty-icon" aria-hidden="true">!</div>
+            <h2>Dispatch team access is required</h2>
+            <p>This page only displays dispatches accepted for the signed-in dispatch team.</p>
+          </section>
+
+          <section id="teamDispatchSetupRequired" class="eta-access-panel" hidden>
+            <div class="eta-empty-icon" aria-hidden="true">!</div>
+            <h2>Active dispatches could not be loaded</h2>
+            <p>Refresh the page or contact an administrator if the problem continues.</p>
+          </section>
+
+          <div id="teamDispatchWorkspace" hidden>
+            <section class="eta-register-card">
+              <div class="eta-card-heading eta-register-heading">
+                <div>
+                  <h2 id="teamDispatchListTitle">Dispatches assigned to your team</h2>
+                  <p id="teamDispatchListDescription">Each dispatch remains here until your team uploads its incident report.</p>
+                </div>
+                <div class="eta-register-actions">
+                  <label class="team-dispatch-search-label" for="teamDispatchSearch">Filter by registration or team OB number
+                    <input id="teamDispatchSearch" type="search" placeholder="Registration or team OB number" autocomplete="off">
+                  </label>
+                  <button class="filter-button secondary compact" id="teamDispatchRefreshButton" type="button">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6v5h-5"></path><path d="M4 18v-5h5"></path><path d="M18 9a7 7 0 0 0-12-3"></path><path d="M6 15a7 7 0 0 0 12 3"></path></svg>
+                    Refresh
+                  </button>
+                </div>
+              </div>
+              <div id="teamDispatchList" class="team-dispatch-list" aria-live="polite">
+                <div class="eta-loading">Loading active dispatches...</div>
+              </div>
+              <div class="team-dispatch-pagination" id="teamDispatchPagination" hidden>
+                <button class="filter-button secondary compact" id="teamDispatchPrevious" type="button">Previous</button>
+                <span id="teamDispatchPageStatus"></span>
+                <button class="filter-button secondary compact" id="teamDispatchNext" type="button">Next</button>
+              </div>
+            </section>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

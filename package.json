@@ -1,0 +1,22 @@
+{
+  "name": "dispatch-link",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Dispatch Link module with Express, SQL Server, and a Pulsit-matched UI shell.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "check": "node -e \"require('./src/app'); console.log('app ok')\""
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "file-type": "^22.0.1",
+    "mssql": "^11.0.1",
+    "multer": "^2.0.2",
+    "pdfkit": "^0.19.1",
+    "sharp": "^0.35.3"
+  }
+}
